@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="VerificaNumFelizSortudo">
+            <div class="form-group">
+                <label class="control-label">Informe um número </label>
+                <input id="txtNumero" name="txtNumero" type="text" onkeypress="return isNumber(event)" maxlength="3" style="width:30%" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Verificar" class="btn btn-default" />
+            </div>
+            <h3>@ViewData["Resultado"]</h3>
+        </form>
+    </div>
+</div>
+
