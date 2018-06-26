@@ -37,7 +37,7 @@ namespace PerlinkProvaTecnica.Controllers
 
             return View("Index");
         }
-        
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -61,13 +61,68 @@ namespace PerlinkProvaTecnica.Controllers
 
         public static bool NumeroSortudo(string numero)
         {
-            string numerosSortudos = "1, 3, 7, 9, 13, 15, 21, 25, 31, 33, 37, 43, 49, 51, 63, 67, 69, 73, 75, 79, 87, 93, 99";
 
-            if (numerosSortudos.IndexOf(numero) != -1)
+            IList<int> NumerosSortudos = ObtemNumerosSortudos();
+
+            if (NumerosSortudos.IndexOf(int.Parse(numero)) != -1)
                 return true;
             else
                 return false;
 
+        }
+
+        public static IList<int> ObtemNumerosSortudos()
+        {
+            IList<int> lstInteiros = new List<int>();
+
+            for (int i = 1; i <= 100; i++)
+                lstInteiros.Add(i);
+
+            //Remove números pares
+            foreach (var item in lstInteiros.ToList())
+            {
+                if ((item % 2) == 0)
+                    lstInteiros.Remove(item);
+            }
+
+            IList<int> lstInteirosImpares = new List<int>();
+            for (int i = 0; i < lstInteiros.Count; i++)
+                lstInteirosImpares.Add(lstInteiros[i]);
+
+
+            IList<int> NumerosSortudos = new List<int>();
+            NumerosSortudos = lstInteirosImpares;
+
+            int posicao = 1;
+            for (int i = 0; i < NumerosSortudos.Count && posicao < NumerosSortudos.Count; i++)
+            {
+                NumerosSortudos = RemovePosicao(NumerosSortudos[posicao], NumerosSortudos);
+
+                posicao += 1;
+
+            }
+
+            return NumerosSortudos;
+        }
+
+        public static IList<int> RemovePosicao(int posicao, IList<int> listNumerosSortudos)
+        {
+            IList<int> listaRemove = new List<int>();
+            for (int i = 0; i < listNumerosSortudos.Count; i++)
+                listaRemove.Add(listNumerosSortudos[i]);
+
+            int pos = posicao;
+
+            for (int i = 0; i < listNumerosSortudos.Count; i++)
+            {
+                if ((i + 1) == pos)
+                {
+                    listaRemove.Remove(listNumerosSortudos[i]);
+                    pos += posicao;
+                }
+            }
+
+            return listaRemove;
         }
 
         public static bool NumeroFeliz(int numero)
